@@ -1,93 +1,43 @@
-#  impor streamlit module
-import streamlit as st
+# Get user input
+user_number = int(input("Enter a number to convert into words! 🔢➡️🔡 : "))
 
-# here i gage page title
-st.set_page_config(page_title="📖  Text Analysis Tool")
-st.markdown("""
-    <style>
-    body,.stApp {
-        background-color: #ffeaa7;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+# List for numbers 0 to 19
+ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+        "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
 
+# List for tens like 20, 30, 40, etc.
+tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
 
-st.markdown("<h1 style = 'text-align: center; backgroung-color:#ffcccb;'>📖 Text Analysis Tool </h1>" ,unsafe_allow_html=True)
+# Logic for converting numbers to words
+def number_to_words(num):
+    if num == 0:
+        return 'Zero'
 
+    word = ''
 
-# here i get input from user
+    # Handle thousands (1000-9999)
+    if num // 1000 > 0:
+        word += ones[num // 1000] + " Thousand "
+        num %= 1000
 
-user_paragraph= st.text_area("✏️  Enter a paragraph for analysis.")
+    # Handle hundreds (100-999)
+    if num // 100 > 0:
+        word += ones[num // 100] + " Hundred "
+        num %= 100
 
+    # Handle tens and ones (0-99)
+    if num > 0:
+        if num < 20:  # For numbers 1-19
+            word += ones[num]
+        else:  # For numbers 20 and above
+            word += tens[num // 10]
+            if num % 10 > 0:
+                word += "-" + ones[num % 10]
 
-# input validation
+    return word.strip()
 
-if user_paragraph:
-    # count word and character
-    # first split paragraph into word
-    words = user_paragraph.split()
-    # count world length
-    words_count_length = len(words)
-    #  count character length
-    char_length_count = len(user_paragraph)
+# Print the result
+print(number_to_words(user_number))
+
+          
     
-    
-    st.markdown(f"<h3 style = 'color : green;'> 📝 Total number of words: {words_count_length}</h3>", unsafe_allow_html=True)
-    st.markdown(f"<h3 style = 'color : blue;'> 🔡 Total number of characters (include space): {char_length_count}</h3>", unsafe_allow_html=True)
-    
-    #  count vowel
-    vowels ="aeiouAEIOU"
-    
-    vowel_count = sum(1 for char in user_paragraph if char in vowels)
-    st.markdown(f"<h3 style = 'color : purple;'> 🔡 Total number vowels : {vowel_count}</h3>", unsafe_allow_html=True)
-    
-    # now here i search and replace it with new word
-    
-    search_word = st.text_input("🔍 Enter a word to search\n")
-    replace_word = st.text_input("🔄 Enter a word to replace it with\n")
-    
-    if search_word and replace_word:
-        modified_paragraph = user_paragraph.replace(search_word, replace_word)
-        st.markdown(f"<h3 style = 'color : orange;'> 🔡 Modified Paragraph</h3>", unsafe_allow_html=True)
-        st.markdown(f"<p style = 'backgroung-color:#ffe4b5; padding : 10px;'>{modified_paragraph} </p>", unsafe_allow_html=True)
-        
-    #   conversion of paragraph in UPPERCASE and lowercase
-    
-        st.markdown(f"<h3 style = 'color : darkblue;'> 🔡 Paragraph In Uppercase</h3>", unsafe_allow_html=True) 
-        st.markdown(f"<p style = 'backgroung-color:#ffe4b5; padding : 10px;'>{modified_paragraph.upper()} </p>", unsafe_allow_html=True)
-       
-        st.markdown(f"<h3 style = 'color : darkgreen;'> 🔡 Paragraph In Lowercase</h3>", unsafe_allow_html=True) 
-        st.markdown(f"<p style = 'backgroung-color:#fafad2; padding : 10px;'>{modified_paragraph.lower()} </p>", unsafe_allow_html=True)
-       
-        word_count_str = str(words_count_length)
-        vowel_count_str = str(vowel_count)
-        
-        st.markdown(f"<h3 style = 'color : brown;'> Word count as a string: {word_count_str} ✅</h3>", unsafe_allow_html=True) 
-        st.markdown(f"<h3 style = 'color : brown;'> vowel count as a string: {word_count_str} ✅</h3>", unsafe_allow_html=True) 
-        
-        #  now chek if python have in paragraph
-        
-        contain_python = 'python' in user_paragraph
-        if contain_python:
-           st.markdown(f"<h3 style = 'color : red;'>🐍 The paragraph contains the word '🐍 python'</h3>", unsafe_allow_html=True) 
-        else:
-            st.markdown(f"<h3 style = 'color : gray;'>❌  The paragraph contains the word '🐍 python'</h3>", unsafe_allow_html=True) 
-      
-        #  now average
-        if words_count_length !=0:
-            avg_word_length = char_length_count / words_count_length
-            st.markdown(f"<h3 style = 'color : magenta;'>📊 Average word length.: {avg_word_length}</h3>", unsafe_allow_html=True) 
-            
-    else:
-        st.warning(f"<h3 style = 'color : red;'>⚠️ Please enter a paragraph to analyze</h3>", unsafe_allow_html=True) 
-      
-        
-      
-st.markdown("""
-            
-            <footer>
-               <p>built with ❣️by Kiran😊 | © 2025 </p>
-            </footer/>
-            
-                  """, unsafe_allow_html=True)      
-      
